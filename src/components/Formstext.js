@@ -38,8 +38,7 @@ const handleVoClick = () => {
     for (count1 = 0; count1 <= text.length; count1++) {
       if (
         text
-          .charAt(count1)
-          .match(/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]/)
+          .charAt(count1).match(/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]/)
       ) {
         countCons++;
         setCount1(countCons);
@@ -55,11 +54,14 @@ const speak = () => {
 const clear = () => {
     Settext("");
     props.showalert("Text is Cleared", "Success");
+    setCount1(0);
+    setCount(0);
 }
  const handlecopy = ()=>{
     let text = document.getElementById("myBox");
     text.select();
     navigator.clipboard.writeText(text.value);
+    document.getSelection().removeAllRanges();
     props.showalert("Text is Copied to Clipboard", "Success");
 
  }
@@ -69,18 +71,18 @@ const clear = () => {
       <div className="container " style ={{color: props.Mode ==='light'?'black':'white'}}>
        <h1 className="my-3">{props.heading} </h1>
        <div className="mb-3 ">
-       <textarea className="form-control" value={text} onChange={onchangehandle} style ={{backgroundColor : props.Mode ==='light'?'white ':'grey',color :props.Mode ==='light'?'black':'white'}} id="myBox" rows="8"> 
+       <textarea className="form-control" value={text} onChange={onchangehandle} style ={{backgroundColor : props.Mode ==='light'?'white ':'#042743',color :props.Mode ==='light'?'black':'white'}} id="myBox" rows="8"> 
       </textarea>
      </div>
-     <button className="btn btn-primary" onClick={onclick}>Convert Into Uppercase</button>
-      <button className="btn btn-primary mx-2" onClick={handleVoClick}> Count no. of Vowels</button>       
-     <button className="btn btn-primary mx-2" onClick={handleCoClick}>Count no. of Consonants</button> 
-     <button type="submit" onClick={speak} className="btn btn-warning mx-2 ">Speak</button>
-     <button type="submit" onClick={handlecopy} className="btn btn-primary mx-2 ">Copy Text</button>
-     <button  onClick={clear} className="btn btn-primary mx-2 ">Clear</button></div>
+     <button disabled = {text.length===0} className="btn btn-primary mx-2 my-1" onClick={onclick}>Convert Into Uppercase</button>
+      <button disabled = {text.length===0} className="btn btn-primary mx-2 my-1" onClick={handleVoClick}> Count no. of Vowels</button>       
+     <button disabled = {text.length===0} className="btn btn-primary mx-2 my-1" onClick={handleCoClick}>Count no. of Consonants</button> 
+     <button disabled = {text.length===0} type="submit" onClick={speak} className="btn btn-warning mx-2 my-1">Speak</button>
+     <button disabled = {text.length===0} type="submit" onClick={handlecopy} className="btn btn-primary mx-2 my-1">Copy Text</button>
+     <button disabled = {text.length===0} onClick={clear} className="btn btn-primary mx-2 ">Clear Text</button></div>
      <div  style ={{color: props.Mode ==='light'?'black':'white'}}> 
      <h2>Summary</h2>
-     <p>{text.split(" ").length} Words {text.length} Characters</p>
+     <p>{text.split(/\s+/).filter((element)=>{return element.length!==0}).length} Words {text.length} Characters</p>
      <h3>You have entered:</h3>
      <p>{count} No. of Vowels</p>
      <p>{count1} No. of Consonants</p>
